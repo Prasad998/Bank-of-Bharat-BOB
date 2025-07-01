@@ -67,9 +67,10 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public UserResponse createAccount(UserRequest userRequest) {
-
+        // Step 1: Log the Start(Just logs the operation for observability and debugging.)
         log.info("Creating a new account.");
 
+        //Generate a Unique User ID
         String userIdGenerated = UUID.randomUUID().toString();
         MapperToResponse mapperToResponse = new MapperToResponse();
 
