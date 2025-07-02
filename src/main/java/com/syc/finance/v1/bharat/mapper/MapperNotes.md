@@ -172,3 +172,10 @@ You must include password in the UserDTO when it's needed — like during regist
 Add password to UserDTO only in relevant use cases, like UserRegistrationDTO (not in general DTO shown to frontend).  
 In toEntity(...), use passwordEncoder.encode(...) before saving.
 ```
+**📦 Summary**
+| Use Case      | DTO Type              | Password Present? | Notes                     |
+| ------------- | --------------------- | ----------------- | ------------------------- |
+| Register user | `UserRegistrationDTO` | ✅ Yes             | Required, encode it       |
+| Login         | `UserLoginDTO`        | ✅ Yes             | Used to check credentials |
+| View user     | `UserDTO`             | ❌ No              | Never expose password     |
+
