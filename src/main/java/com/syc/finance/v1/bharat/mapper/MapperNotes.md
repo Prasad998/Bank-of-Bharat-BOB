@@ -1,3 +1,31 @@
+## 🔄 Example Flow:
+
+1. **Controller** receives a request.
+2. Calls a **Service method** with input DTO.
+3. Service:
+
+   * Validates input
+   * Calls **Mapper** to convert DTO → Entity
+   * Calls **Repository** to save/fetch data
+   * Calls **Mapper** again to convert Entity → Response DTO
+4. Returns response to controller
+---
+## 🔁 After Services:
+
+Once you understand the flow in the Service layer, **then** revisit:
+
+* `Mapper` classes to see the conversion logic in isolation
+* `DTOs` and `Entities` to understand data structure
+* `Repositories` to know what queries are being made
+
+---
+
+### 🧭 Final Suggestion:
+
+**Follow the full request lifecycle**:
+`Controller ➝ Service ➝ Mapper/Repository ➝ Response`
+
+---
 `UserDTO`: Used for data transfer (e.g. API requests/responses).  
 
 `User`: The Entity, used for database persistence.  
