@@ -51,7 +51,7 @@ public class UserMapper {
 ```
 ---
 
-## Manual UserMapper (most common and transparent)
+## 1. Manual UserMapper (most common and transparent)
 📁 Structure:
 - `User.java` (Entity)
 - `UserDTO.java` (DTO)
@@ -102,3 +102,63 @@ public class UserMapper {
     }
 }
 ```
+## ✅ 2. With MapStruct (recommended for large projects)  
+🔸** Step 1: Add MapStruct Dependency**  
+```
+<details> <summary>Maven</summary>
+```
+🔸 **Step 2: Create the Mapper Interface**
+```java
+@Mapper(componentModel = "spring")
+public interface UserMapper {
+
+    User toEntity(UserDTO dto);
+
+    UserDTO toDTO(User user);
+}
+//✅ MapStruct will generate an implementation at build time and inject it via Spring (@Component-like behavior).
+```
+**🔸 Step 3: Use it in your Service**
+```java
+@Service
+public class UserService {
+
+    private final UserMapper userMapper;
+
+    public UserService(UserMapper userMapper) {
+        this.userMapper = userMapper;
+    }
+
+    public UserDTO getUserDtoFromDb(Long id) {
+        User user = userRepository.findById(id).orElseThrow();
+        return userMapper.toDTO(user);
+    }
+
+    public void createUser(UserDTO dto) {
+        User user = userMapper.toEntity(dto);
+        userRepository.save(user);
+    }
+}
+```
+
+```css
+src/
+├── dto/
+│   └── UserDTO.java
+├── entity/
+│   └── User.java
+├── mapper/
+│   └── UserMapper.java  ← Manual or MapStruct
+├── service/
+│   └── UserService.java
+
+```
+
+| Method       | Manual Mapper                         | MapStruct                        |
+| ------------ | ------------------------------------- | -------------------------------- |
+| Easy Setup   | ✅ Yes                                 | ⚠️ Needs dependency + annotation |
+| Verbosity    | 🟡 Verbose                            | ✅ Minimal                        |
+| Custom Logic | ✅ Easy to add (e.g., encode password) | 🟡 Needs expression syntax       |
+| Performance  | ✅ Fast                                | ✅ Fast (compile-time gen)        |
+
+
