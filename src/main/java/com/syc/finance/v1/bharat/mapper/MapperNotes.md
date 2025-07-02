@@ -88,7 +88,7 @@ public class UserMapper {
         User user = new User();
         user.setName(dto.getName());
         user.setEmail(dto.getEmail());
-        // Password is not in DTO; you can set default or handle elsewhere
+        // ❌ Never expose password in DTO
         return user;
     }
 
@@ -161,4 +161,14 @@ src/
 | Custom Logic | ✅ Easy to add (e.g., encode password) | 🟡 Needs expression syntax       |
 | Performance  | ✅ Fast                                | ✅ Fast (compile-time gen)        |
 
+---
 
+## Doubt   
+```
+❓ You're asking:
+If password isn't set in UserMapper.toEntity(...), how does it get saved in the database?
+🔍 Short Answer:
+You must include password in the UserDTO when it's needed — like during registration — and handle it properly, usually by encoding it before saving.  
+Add password to UserDTO only in relevant use cases, like UserRegistrationDTO (not in general DTO shown to frontend).  
+In toEntity(...), use passwordEncoder.encode(...) before saving.
+```
